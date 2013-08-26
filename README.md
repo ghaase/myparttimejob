@@ -58,7 +58,7 @@ mysql> select table_name, partition_name from information_schema.partitions wher
 
 Use It
 ------
-First, you will need tables that are partitioned by date or timestamp using the range columns( date_column_name ) syntax. Each table should have a default partition identified by '<table_name>_default' with values less than maxvalue. This is critical because the routines split this partition into multiple partitions.
+First, you will need tables that are partitioned by date or timestamp using the range columns( date_column_name ) syntax. Each table should have a default partition identified by '&lt;table_name&gt;_default' with values less than maxvalue. This is critical because the routines split this partition into multiple partitions.
 
 Note that partitioning in InnoDB is not that straightforward due to requirements for auto_increment and requirements for partitioning keys. One way to do it is to make the primary key ( date_column_name, id ) and then have a seeparate index on id. This will allow you to have the date column as the first (useeful) column in the partitioning index, but still allow InnoDB to correctly increment the id field.
 
@@ -73,7 +73,7 @@ create table partition_me_dates
   key index_partition_me_dates_on_id (partition_me_dates_id)
 ) engine=InnoDB
 partition by range column (insert_date)
-(padtition partition_me_dates_default values less than maxvalue)
+(partition partition_me_dates_default values less than maxvalue)
 ;
 ```
 
