@@ -64,7 +64,7 @@ Note that partitioning in InnoDB is not that straightforward due to requirements
 
 For example:
 ```
-create taable partition_me_dates
+create table partition_me_dates
 (
   partition_me_dates_id     integer     NOT NULL    auto_increment,
   insert_date               datetime    NOT NULL,
