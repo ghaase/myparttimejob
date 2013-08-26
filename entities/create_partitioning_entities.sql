@@ -1,7 +1,7 @@
-create database if not exists partitionmagic;
+create database if not exists myparttimejob;
 
-drop table if exists partitionmagic.partition_ranges;
-create table partitionmagic.partition_ranges
+drop table if exists myparttimejob.partition_ranges;
+create table myparttimejob.partition_ranges
 (
  partition_range_id     integer     NOT NULL auto_increment,
  day                    date        NOT NULL,
@@ -20,7 +20,7 @@ create table partitionmagic.partition_ranges
 select @startdate := '2013-01-01';
 select @enddate := '2016-01-01';
 
-insert into partitionmagic.partition_ranges
+insert into myparttimejob.partition_ranges
     (
     day,
     day_partition_suffix,
@@ -57,8 +57,8 @@ from
 ;
 
 
-drop table if exists partitionmagic.partition_tables;
-create table partitionmagic.partition_tables
+drop table if exists myparttimejob.partition_tables;
+create table myparttimejob.partition_tables
 (
  partition_table_id     integer     NOT NULL auto_increment,
  table_schema           varchar(64) NOT NULL,
@@ -69,8 +69,8 @@ create table partitionmagic.partition_tables
 ) engine=InnoDB
 ;
 
-drop table if exists partitionmagic.testdaily;
-create table partitionmagic.testdaily
+drop table if exists myparttimejob.testdaily;
+create table myparttimejob.testdaily
 (
  test_daily_id  integer     NOT NULL auto_increment,
  created_at     datetime    NOT NULL,
@@ -81,8 +81,8 @@ partition by range columns (created_at)
 (partition testdaily_default values less than maxvalue)
 ;
 
-drop table if exists partitionmagic.testweekly;
-create table partitionmagic.testweekly
+drop table if exists myparttimejob.testweekly;
+create table myparttimejob.testweekly
 (
  test_weekly_id integer     NOT NULL auto_increment,
  created_at     datetime    NOT NULL,
@@ -93,8 +93,8 @@ partition by range columns (created_at)
 (partition testweekly_default values less than maxvalue)
 ;
 
-drop table if exists partitionmagic.testmonthly;
-create table partitionmagic.testmonthly
+drop table if exists myparttimejob.testmonthly;
+create table myparttimejob.testmonthly
 (
  test_monthly_id integer     NOT NULL auto_increment,
  created_at     datetime    NOT NULL,
@@ -105,8 +105,8 @@ partition by range columns (created_at)
 (partition testmonthly_default values less than maxvalue)
 ;
 
-drop table if exists partitionmagic.testyearly;
-create table partitionmagic.testyearly
+drop table if exists myparttimejob.testyearly;
+create table myparttimejob.testyearly
 (
  test_yearly_id integer     NOT NULL auto_increment,
  created_at     datetime    NOT NULL,
@@ -117,7 +117,7 @@ partition by range columns (created_at)
 (partition testyearly_default values less than maxvalue)
 ;
 
-insert into partitionmagic.partition_tables
+insert into myparttimejob.partition_tables
     (
     table_schema,
     table_name,
@@ -126,25 +126,25 @@ insert into partitionmagic.partition_tables
     )
 values
     (
-    'partitionmagic',
+    'myparttimejob',
     'testdaily',
     'daily',
     'testdaily_'
     ),
     (
-    'partitionmagic',
+    'myparttimejob',
     'testweekly',
     'weekly',
     'testweekly_'
     ),
     (
-    'partitionmagic',
+    'myparttimejob',
     'testmonthly',
     'monthly',
     'testmonthly_'
     ),
     (
-    'partitionmagic',
+    'myparttimejob',
     'testyearly',
     'yearly',
     'testyearly_'

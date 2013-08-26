@@ -1,18 +1,18 @@
-partitionmagic
+myparttimejob
 ==============
 
-A set of entities and routines for managing range column date partitions in MySQL. Tables can be partitioned by day, week, month, or year.
+Mysql Partition Manager for Date/Timestamp ranges. A set of entities and routines for managing range column date or timestamp partitions in MySQL. Tables can be partitioned by day, week, month, or year.
 
 Installation
 ------------
 Clone the repo and then execute the install.sql script as a user with suitable permissions to create databases and execute routines. Make sure you use the delimiter switch as shown below or the routines will not compile correctly.
-- git clone https://github.com/ghaase/partitionmagic
-- cd partitionmagic
+- git clone https://github.com/ghaase/myparttimejob
+- cd myparttimejob
 - mysql -uuser -ppass -hhostname --delimiter='$$' < install.sql
 
 Verify your Install
 -------------------
-The install script creates a set of test tables created in the partitionmagic schema which allow you to verify the functionality before implementing your own tables. You can log into your database and check for exsting partitions, call the manage_partitions routine, and the rerun the select statement to validate things are working correctly.
+The install script creates a set of test tables created in the myparttimejob schema which allow you to verify the functionality before implementing your own tables. You can log into your database and check for exsting partitions, call the manage_partitions routine, and the rerun the select statement to validate things are working correctly.
 
 ```
 mysql> select table_name, partition_name from information_schema.partitions where partition_name is not null;
@@ -26,7 +26,7 @@ mysql> select table_name, partition_name from information_schema.partitions wher
 +--------------+---------------------+
 4 rows in set (0.10 sec)
 
-mysql> call partitionmagic.manage_partitions();
+mysql> call myparttimejob.manage_partitions();
 Query OK, 0 rows affected, 1 warning (0.73 sec)
 
 mysql> select table_name, partition_name from information_schema.partitions where partition_name is not null;
@@ -80,7 +80,7 @@ partition by range columns (insert_date)
 In order for the system to know that your table needs partition management, you need to insert a row into the partition_tables table. Partition Frequency can be daily, weekly, monthly, or yearly.
 
 ```
-insert into partitionmagic.partition_tables
+insert into myparttimejob.partition_tables
     (
     table_schema,
     table_name,
@@ -100,7 +100,7 @@ values
 Once you have created the table and inserted the record into the partition_tables table, you can manage your partitions simply by calling the routine:
 
 ```
-call partitionmagic.manage_partitions();
+call myparttimejob.manage_partitions();
 ```
 
 We suggest putting that call in a daily crontab.

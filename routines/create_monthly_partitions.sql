@@ -1,6 +1,6 @@
-drop procedure if exists partitionmagic.create_monthly_partitions$$
+drop procedure if exists myparttimejob.create_monthly_partitions$$
 
-create procedure partitionmagic.create_monthly_partitions
+create procedure myparttimejob.create_monthly_partitions
 (
     in  l_table_name    varchar(64),
     in  l_table_schema  varchar(64)
@@ -17,9 +17,9 @@ begin
             concat(pt.partition_base_name,pr.month_partition_suffix) as partition_name,
             pr.month_partition_filter as partition_filter
         from
-            partitionmagic.partition_tables pt
+            myparttimejob.partition_tables pt
         join
-            partitionmagic.partition_ranges pr
+            myparttimejob.partition_ranges pr
         where
             pt.table_name = l_table_name and
             pt.table_schema = l_table_schema and

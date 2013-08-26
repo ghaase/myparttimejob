@@ -1,6 +1,6 @@
-drop procedure if exists partitionmagic.manage_partitions$$
+drop procedure if exists myparttimejob.manage_partitions$$
 
-create procedure partitionmagic.manage_partitions()
+create procedure myparttimejob.manage_partitions()
 comment 'Reads from partition_tables and partition_ranges and creates new partitions for tables'
 begin
 
@@ -16,7 +16,7 @@ begin
             table_name,
             partition_frequency
         from
-            partitionmagic.partition_tables
+            myparttimejob.partition_tables
     ;
     declare     continue handler for not found set done = true;
     
