@@ -72,7 +72,7 @@ create table partition_me_dates
   primary_key (insert_date, partition_me_dates_id),
   key index_partition_me_dates_on_id (partition_me_dates_id)
 ) engine=InnoDB
-partition by range column (insert_date)
+partition by range columns (insert_date)
 (partition partition_me_dates_default values less than maxvalue)
 ;
 ```
