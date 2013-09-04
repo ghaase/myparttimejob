@@ -23,7 +23,7 @@ begin
         where
             pt.table_name = l_table_name and
             pt.table_schema = l_table_schema and
-            pr.day >= curdate() and
+            pr.day >= curdate() and pr.day < date_add(curdate(), interval 7 day) and
             not exists
                 (
                 select
@@ -41,8 +41,6 @@ begin
             pr.day_partition_suffix
         order by
             pr.day
-        limit
-            5
     ;
     declare continue handler for not found set done = true;
 
