@@ -6,7 +6,7 @@ Mysql Partition Manager for Date/Timestamp ranges. A set of entities and routine
 Installation
 ------------
 Clone the repo and then execute the install.sql script as a user with suitable permissions to create databases and execute routines. Make sure you use the delimiter switch as shown below or the routines will not compile correctly.
-- git clone https://github.com/ghaase/myparttimejob
+- git clone https://github.com/ridecharge/myparttimejob
 - cd myparttimejob
 - mysql -uuser -ppass -hhostname --delimiter='$$' < install.sql
 
