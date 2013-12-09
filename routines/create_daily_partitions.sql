@@ -5,7 +5,7 @@ create procedure myparttimejob.create_daily_partitions
     in  l_table_name    varchar(64),
     in  l_table_schema  varchar(64)
 )
-comment 'takes table_name and schema_name and creates partitions for 5 days forward'
+comment 'takes table_name and schema_name and creates partitions for 7 days forward'
 begin
 
     declare     l_partition_name    varchar(64);
@@ -23,26 +23,17 @@ begin
         where
             pt.table_name = l_table_name and
             pt.table_schema = l_table_schema and
-            pr.day >= curdate() and pr.day < date_add(curdate(), interval 7 day) and
-            not exists
-                (
-                select
-                    1
-                from
-                    information_schema.partitions isp
-                where
-                    isp.partition_name = concat(pt.partition_base_name,pr.day_partition_suffix) and
-                    isp.table_name = l_table_name and
-                    isp.table_schema = l_table_schema and
-                    isp.table_name = pt.table_name and
-                    isp.table_schema = pt.table_schema
-                )
+            pr.day >= curdate() and pr.day < date_add(curdate(), interval 7 day) 
         group by
             pr.day_partition_suffix
         order by
             pr.day
     ;
     declare continue handler for not found set done = true;
+    declare continue handler for 1517
+    begin
+        select concat('Did not create ',l_partition_name,' - partition already exists') as status;
+    end;
 
     open c_partitions;
     partition_loop: loop
@@ -54,17 +45,12 @@ begin
             leave partition_loop;
         end if;
 
-        set l_new_partition = concat_ws(',',l_new_partition, concat('partition ',l_partition_name,' values less than (''',l_partition_filter,''')'));
-
-    end loop partition_loop;
-
-    if l_new_partition is not null then
-    
+        set l_new_partition = concat('partition ',l_partition_name,' values less than (''',l_partition_filter,''')');
         set @sqlstatement = concat('alter table ',l_table_schema,'.',l_table_name,' reorganize partition ',l_table_name,'_default into (',l_new_partition,', partition ',l_table_name,'_default values less than maxvalue)');
         prepare sqlquery from @sqlstatement;
         execute sqlquery;
         deallocate prepare sqlquery;
 
-    end if;
+    end loop partition_loop;
 
 end 
